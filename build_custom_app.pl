@@ -10,18 +10,20 @@ my $zim_url;
 my $custom_app;
 my $keystore;
 my $api_key;
+my $version = "0";
 my $cmd;
 
 # Get console line arguments
 GetOptions('zim_url=s' => \$zim_url,
 	   'custom_app=s' => \$custom_app,	   
 	   'keystore=s' => \$keystore,
-	   'api_key=s' => \$api_key
+	   'api_key=s' => \$api_key,
+	   'version=s' => \$version
 	   );
 
 # Print usage() if necessary
 if (!$zim_url || !$custom_app || !$keystore || !$api_key) {
-    print "usage: ./build_custom_app.pl --keystore=kiwix-android.keystore --api_key=google.json --zim_url=\"https://download.kiwix.org/zim/wikipedia_en_medicine_novid.zim\" --custom_app=wikimed\n";
+    print "usage: ./build_custom_app.pl --keystore=kiwix-android.keystore --api_key=google.json --zim_url=\"https://download.kiwix.org/zim/wikipedia_en_medicine_novid.zim\" --custom_app=wikimed [--version=1]\n";
     exit;
 }
 
@@ -38,7 +40,7 @@ $ENV{ZIM_SIZE} = $zim_size;
 
 # Compute version code base
 $cmd = "date +%y%j";
-my $version_code_base = `$cmd` =~ s/\n//gr . "0";
+my $version_code_base = `$cmd` =~ s/\n//gr . $version;
 
 # Compute content version code
 my $content_version_code = $version_code_base;
