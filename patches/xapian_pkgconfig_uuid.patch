@@ -1,0 +1,98 @@
+Only in xapian-core-1.4.2.update/: autom4te.cache
+diff -ur xapian-core-1.4.2/configure xapian-core-1.4.2.update/configure
+--- xapian-core-1.4.2/configure	2017-08-15 16:38:34.000000000 -0400
++++ xapian-core-1.4.2.update/configure	2017-08-14 17:28:56.000000000 -0400
+@@ -655,6 +655,8 @@
+ BUILD_BACKEND_CHERT_TRUE
+ VPATH_BUILD_FALSE
+ VPATH_BUILD_TRUE
++USE_UUID_API_FALSE
++USE_UUID_API_TRUE
+ USE_WIN32_UUID_API_FALSE
+ USE_WIN32_UUID_API_TRUE
+ USE_PROC_FOR_UUID_FALSE
+@@ -20030,6 +20032,7 @@
+ 
+ use_proc_for_uuid=0
+ use_win32_uuid_api=0
++use_uuid_lib=0
+ case $enable_backend_chert$enable_backend_glass in
+ *yes*)
+ 
+@@ -20185,7 +20188,9 @@
+ ac_res=$ac_cv_search_uuid_generate
+ if test "$ac_res" != no; then :
+   test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
+-
++  if test "$ac_res" != "none required"; then :
++  use_uuid_lib=1
++fi
+ else
+ 
+ 	  as_fn_error $? "uuid_generate() not found in -luuid - required for chert and glass (you may need to install the uuid-dev, libuuid-devel or e2fsprogs-devel package)" "$LINENO" 5
+@@ -20295,6 +20300,14 @@
+   USE_WIN32_UUID_API_FALSE=
+ fi
+ 
++ if test "$use_uuid_api" = 1; then
++  USE_UUID_API_TRUE=
++  USE_UUID_API_FALSE='#'
++else
++  USE_UUID_API_TRUE='#'
++  USE_UUID_API_FALSE=
++fi
++
+ 
+ REMOTE_LIBS=
+ if test "$enable_backend_remote" = yes ; then
+@@ -21362,6 +21375,10 @@
+   as_fn_error $? "conditional \"USE_WIN32_UUID_API\" was never defined.
+ Usually this means the macro was only invoked conditionally." "$LINENO" 5
+ fi
++if test -z "${USE_UUID_API_TRUE}" && test -z "${USE_UUID_API_FALSE}"; then
++  as_fn_error $? "conditional \"USE_UUID_API\" was never defined.
++Usually this means the macro was only invoked conditionally." "$LINENO" 5
++fi
+ if test -z "${VPATH_BUILD_TRUE}" && test -z "${VPATH_BUILD_FALSE}"; then
+   as_fn_error $? "conditional \"VPATH_BUILD\" was never defined.
+ Usually this means the macro was only invoked conditionally." "$LINENO" 5
+diff -ur xapian-core-1.4.2/configure.ac xapian-core-1.4.2.update/configure.ac
+--- xapian-core-1.4.2/configure.ac	2017-08-15 16:38:34.000000000 -0400
++++ xapian-core-1.4.2.update/configure.ac	2017-08-14 17:28:03.000000000 -0400
+@@ -761,6 +761,7 @@
+ 
+ use_proc_for_uuid=0
+ use_win32_uuid_api=0
++use_uuid_lib=0
+ case $enable_backend_chert$enable_backend_glass in
+ *yes*)
+   dnl We use zlib for compressing tags in chert/glass.  We could
+@@ -799,7 +800,10 @@
+ 	dnl util-linux-ng's uuid/uuid.h found - check for uuid_generate in
+ 	dnl -luuid.
+ 	SAVE_LIBS=$LIBS
+-	AC_SEARCH_LIBS([uuid_generate], [uuid], [], [
++	AC_SEARCH_LIBS(
++    [uuid_generate], [uuid],
++    [AS_IF([test "$ac_res" != "none required"], use_uuid_lib=1)],
++    [
+ 	  AC_MSG_ERROR([uuid_generate() not found in -luuid - required for chert and glass (you may need to install the uuid-dev, libuuid-devel or e2fsprogs-devel package)])
+ 	  ])
+ 	if test x != x"$LIBS" ; then
+@@ -844,6 +848,7 @@
+ esac
+ AM_CONDITIONAL([USE_PROC_FOR_UUID], [test "$use_proc_for_uuid" = 1])
+ AM_CONDITIONAL([USE_WIN32_UUID_API], [test "$use_win32_uuid_api" = 1])
++AM_CONDITIONAL([USE_UUID_API], [test "$use_uuid_api" = 1])
+ 
+ REMOTE_LIBS=
+ if test "$enable_backend_remote" = yes ; then
+diff -ur xapian-core-1.4.2/pkgconfig/xapian-core.pc.in xapian-core-1.4.2.update/pkgconfig/xapian-core.pc.in
+--- xapian-core-1.4.2/pkgconfig/xapian-core.pc.in	2017-08-15 16:38:34.000000000 -0400
++++ xapian-core-1.4.2.update/pkgconfig/xapian-core.pc.in	2017-08-14 17:28:37.000000000 -0400
+@@ -13,4 +13,4 @@
+ Cflags: -I${includedir} @abi_affecting_cxxflags@
+ @USE_RT_LIB_TRUE@Libs: @ldflags@ -L${libdir} -lxapian@LIBRARY_VERSION_SUFFIX@ -lrt
+ @USE_RT_LIB_FALSE@Libs: @ldflags@ -L${libdir} -lxapian@LIBRARY_VERSION_SUFFIX@
+-@USE_WIN32_UUID_API_FALSE@Requires: uuid
++@USE_UUID_API_TRUE@Requires: uuid
