@@ -402,7 +402,7 @@ class KiwixCustomApp(Dependency):
         self.custom_name = buildEnv.options.android_custom_app
 
     class Source(GitClone):
-        git_remote = "https://github.com/kiwix/kiwix-android-custom"
+        git_remote = "https://github.com/nataren/kiwix-android-custom"
         git_dir = "kiwix-android-custom"
 
     class Builder(GradleBuilder):
