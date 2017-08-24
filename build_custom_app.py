@@ -76,7 +76,7 @@ def parse_args():
             print("Try to get zim url from info.json file")
         if not options.version_name:
             print("Try to get version_name form info.json file")
-        request_url = ('https://raw.githubusercontent.com/kiwix/kiwix-android-custom/master/{}/info.json'
+        request_url = ('https://raw.githubusercontent.com/nataren/kiwix-android-custom/master/{}/info.json'
                       .format(options.custom_app))
         json_request = requests.get(request_url)
         if json_request.status_code != 200:
