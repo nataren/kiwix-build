@@ -96,7 +96,6 @@ else
     TARGET=kiwix-tools
   fi
   ${TRAVIS_BUILD_DIR}/kiwix-build.py \
-    --verbose
     --target-platform $PLATFORM \
     --hide-progress \
     ${TARGET}
