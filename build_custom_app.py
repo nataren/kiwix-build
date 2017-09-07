@@ -284,12 +284,12 @@ def travis_launch_build(organisation, repository, options, zim_size):
                 options.custom_app, options.base_version)
         })
 
-
+    print(request_url)
     r = requests.post(request_url, headers=headers, json=data)
     if r.status_code != 202:
         print("Error while requesting build:")
         print(r.reason)
-        print("Have you forget to give the travis token ?")
+        print("Have you forgotten to give the travis token?")
         sys.exit(-1)
     else:
         request_id = r.json()['request']['id']
@@ -300,6 +300,7 @@ def travis_launch_build(organisation, repository, options, zim_size):
             organisation=organisation,
             repository=repository,
             endpoint='builds')
+        print(request_url)
         while request_left:
             time.sleep(1)
             print("Try to get associated build.")
@@ -319,15 +320,15 @@ def travis_launch_build(organisation, repository, options, zim_size):
             request_left -= 1
         if found:
             print("Associated build found:  {}.".format(build['number']))
-            print("https://travis-ci.org/kiwix/kiwix-build/builds/{}".format(build['id']))
+            print("https://travis-ci.org/nataren/kiwix-build/builds/{}".format(build['id']))
         else:
-            print("Request has been accepted by travis-ci but I cannot found "
+            print("Request has been accepted by travis-ci but I cannot find "
                   "the associated build. Have a look here "
-                  "https://travis-ci.org/kiwix/kiwix-build/builds"
+                  "https://travis-ci.org/nataren/kiwix-build/builds "
                   "if you found it.")
         if not options.android_upload:
             print(("Automatic upload to android play store has been deactivated.\n"
-                   "You will find the apks at this address once they have been compiled :"
+                   "You will find the apks at this address once they have been compiled:"
                    " http://tmp.kiwix.org/custom_apps/{}_{}").format(
                        options.custom_app, options.base_version))
 
