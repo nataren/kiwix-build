@@ -22,9 +22,6 @@ from utils import (
 
 import requests
 import httplib2
-from apiclient.discovery import build
-from apiclient.errors import HttpError
-from oauth2client import client
 from oauth2client.service_account import ServiceAccountCredentials
 
 tmpl_request_url = "https://api.travis-ci.org/repo/{organisation}%2F{repository}/{endpoint}"
@@ -34,7 +31,7 @@ UUID:#{uuid}#"""
 
 description = """Launch a custom application build.
 This command will launch a custom application build on Travis-CI.
-Travis-CI jobs will compile the application and upload the build apks on
+Travis-CI jobs will compile the application and upload the build apks on
 google play, using tha 'alpha' track of the application.
 
 You will need to have a valid TRAVIS_TOKEN associated to your personnal account
@@ -143,7 +140,7 @@ def do_launch(options):
     else:
         zim_size = get_zim_size(zim_url=options.zim_url,
                                 check_certificate=options.check_certificate)
-    travis_launch_build('kiwix', 'kiwix-build', options, zim_size)
+    travis_launch_build('nataren', 'kiwix-build', options, zim_size)
     print("Travis build has been launch.")
 
 
