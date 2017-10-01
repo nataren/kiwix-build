@@ -3,6 +3,7 @@
 sudo apt-get install python3-pip virtualenv
 
 export TOP_DIR=build_dir
+mkdir -p $TOP_DIR
 cd $TOP_DIR
 
 virtualenv -p python3 ./
@@ -23,7 +24,10 @@ cd kiwix-build
 
 ```
 
-# 
+# You can run these commands as many times as you want.
+
+Make sure to update the `VERSION_CODE`, `CONTENT_VERSION_CODE`, and `VERSION_NAME` when you need to. You can find out how to build those values in the [documentation](https://github.com/kiwix/kiwix-build/wiki/Build-and-publish-a-custom-app-locally-(without-travis)#build-custom-app-apk)
+
 ```
 export VERSION_CODE=1172710; export CONTENT_VERSION_CODE=117271; export VERSION_NAME=2017-08; python ./kiwix-build.py --target-platform android_arm --android-custom-app wikimedes kiwix-android-custom --zim-file-url https://download.kiwix.org/zim/wikipedia/wikipedia_es_medicine_novid_2017-08.zim --zim-file-size 290300506
 
