@@ -285,7 +285,7 @@ class BuildEnv:
         if _platform == 'Linux':
             self.distname, _, _ = platform.linux_distribution()
             self.distname = self.distname.lower()
-            if self.distname == 'ubuntu':
+            if self.distname == 'ubuntu' or self.distname == 'linuxmint':
                 self.distname = 'debian'
 
     def setup_build(self, target_platform):
