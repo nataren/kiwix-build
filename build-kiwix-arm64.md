@@ -19,7 +19,7 @@ mkdir ../bin
 cp ninja ../bin
 cd ..
 
-git clone git@github.com:nataren/kiwix-build.git
+git clone https://github.com/nataren/kiwix-build.git
 cd kiwix-build
 
 ```
