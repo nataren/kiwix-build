@@ -1,6 +1,6 @@
 # One time setup
 ```
-sudo apt-get install python3-pip virtualenv
+sudo apt-get install python3-pip virtualenv default-jdk-headless default-jre-headless
 
 export TOP_DIR=build_dir
 mkdir -p $TOP_DIR
