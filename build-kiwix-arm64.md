@@ -20,6 +20,8 @@ cp ninja ../bin
 cd ..
 
 git clone https://github.com/nataren/kiwix-build.git
+mkdir -p ~/.gradle/
+echo "org.gradle.jvmargs=-XX\:MaxHeapSize\=10g -Xmx10g" >> ~/.gradle/gradle.properties
 cd kiwix-build
 
 ```
