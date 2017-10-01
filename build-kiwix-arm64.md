@@ -8,7 +8,7 @@ cd $TOP_DIR
 
 virtualenv -p python3 ./
 source bin/activate
-pip3 install meson
+pip3 install meson pillow
 hash -r
 
 git clone git://github.com/ninja-build/ninja.git
